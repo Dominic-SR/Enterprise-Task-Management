@@ -2,7 +2,7 @@ import { MongoClient } from 'mongodb';
 
 const url = 'mongodb://localhost:27017';
 const client = new MongoClient(url);
-const dbName = 'myProject';
+const dbName = 'task_management';
 
 async function main() {
   try {
