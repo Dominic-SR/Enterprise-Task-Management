@@ -23,9 +23,8 @@ let { username, email, password, rold_id, organization_id } = req.body;
     let addUser = await postUser.save();
     res.status(201).json({ message: 'User added successfully' });
   } catch (error) {
-    next(error)
-    // console.log("EERRRR",error);
-    // res.status(500).json({ message: 'Error adding user', error });
+    // next(error)
+    res.status(500).json({ message: 'Error adding user', error });
     }
   }
 
