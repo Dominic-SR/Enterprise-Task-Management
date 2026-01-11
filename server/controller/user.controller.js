@@ -1,37 +1,34 @@
-import {addUser, getUserByEmail, loginUserModel} from '../module/user.model.js';
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import moment from 'moment';
+import User from "../models/userSchema.js"
+import {errorHandler} from "../middleware/error.js"
 
-
-export const createUser = async (req, res) => {
-    const { user_name, user_email, user_password, user_phoneno, user_picture } = req.body;
-    if (!user_email || !user_password) {
+export const createUser = async (req, res, next) => {
+let { username, email, password, rold_id, organization_id } = req.body;
+    if (!username || !email || !password) {
     return res.status(400).json({ message: 'Need to required fields !' });
   }
 
   try {
-    let user_org_pass = user_password;
-    const hashpassword = await bcrypt.hash(user_password,10);
-    await addUser(user_name, user_email, hashpassword, user_org_pass, user_phoneno, user_picture);
+    const hashpassword = await bcrypt.hash(password,10);
+    password = hashpassword
+    let postUser = await new User({
+            username:username,
+            email:email,
+            password: password,
+            rold_id: rold_id,
+            organization_id: organization_id
+    }); 
+    let addUser = await postUser.save();
     res.status(201).json({ message: 'User added successfully' });
   } catch (error) {
-    if(error.code = "ER_DUP_ENTRY"){
-      
-      // You might check the error message to see which field was duplicated
-        let field = 'User';
-        if (error.sqlMessage.includes('user_phoneno')) {
-            field = 'Phone no';
-        } else if (error.sqlMessage.includes('user_email')) {
-            field = 'Email';
-        }
-        return res.status(401).json({ 
-            message: `${field} already exists. Please choose a different one.` 
-        });
+    next(error)
+    // console.log("EERRRR",error);
+    // res.status(500).json({ message: 'Error adding user', error });
     }
-    res.status(500).json({ message: 'Error adding user', error });
   }
-}
+
 
 
 export const loginUser = async (req,res) => {

@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import indexRouter from "./routes/index.routes.js";
+import { connectToDb } from "./utils/database.js";
 import morgan from "morgan";
 import dotenv from 'dotenv';
 
@@ -13,4 +14,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use('/api',indexRouter);
-app.listen(process.env.PORT, ()=>console.log(`server running on ${process.env.PORT}`));
+// app.listen(process.env.PORT, ()=>console.log(`server running on ${process.env.PORT}`));
+
+connectToDb().then(() => {
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT}`);
+  });
+});
