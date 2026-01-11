@@ -5,9 +5,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const roles = [
-  { role: 'Super Admin', role_id: "1" },
-  { role: 'Admin', role_id: "2" },
-  { role: 'User', role_id: "3" }
+  { role: 'Super Admin', role_no: 1 },
+  { role: 'Admin', role_no: 2 },
+  { role: 'User', role_no: 3 }
 ];
 
 const seedDB = async () => {

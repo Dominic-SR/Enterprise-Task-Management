@@ -9,8 +9,8 @@ const roleSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
-  role_id: {
-    type: String,
+  role_no: {
+    type: Number,
     required: true,
     lowercase: true
   },

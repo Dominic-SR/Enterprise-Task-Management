@@ -5,7 +5,7 @@ import User from "../models/userSchema.js"
 import {errorHandler} from "../middleware/error.js"
 
 export const createUser = async (req, res, next) => {
-let { username, email, password, rold_id, organization_id } = req.body;
+let { username, email, password, role} = req.body;
     if (!username || !email || !password) {
     return res.status(400).json({ message: 'Need to required fields !' });
   }
@@ -17,8 +17,7 @@ let { username, email, password, rold_id, organization_id } = req.body;
             username:username,
             email:email,
             password: password,
-            rold_id: rold_id,
-            organization_id: organization_id
+            role: role,
     }); 
     let addUser = await postUser.save();
     res.status(201).json({ message: 'User added successfully' });
@@ -30,39 +29,41 @@ let { username, email, password, rold_id, organization_id } = req.body;
 
 
 
-export const loginUser = async (req,res) => {
-  
-  const {user_email, user_password} = req.body;
+export const login = async (req,res) => {
+  const {email, password} = req.body;
 
-  if(!user_email || !user_password){
+  if(!email || !password){
     return res.status(400).json({message:'invalid login'})
   }
 
   try{
-
-    let getUserByEmailId = await getUserByEmail(user_email);
+    const getUser = await User.findOne({ email }).select('+password');
     
-    let isCheckPassword = await bcrypt.compare(user_password,getUserByEmailId[0].user_password)
-      if(isCheckPassword){
+    if (!getUser) {
+      return res.status(401).json({ message: "Invalid Email or Password" });
+    }
 
-        
+    let isCheckPassword = await bcrypt.compare(password,getUser.password)
+
+    if(isCheckPassword){
         let jwttoken = jwt.sign({
-          user_id:getUserByEmailId[0].user_id, 
-          user_name:getUserByEmailId[0].user_name, 
-          user_email:getUserByEmailId[0].user_email},
+         _id:getUser._id,
+         name:getUser.username,
+         email:getUser.email},
           process.env.JWT_SECRET
-        )
+      )
 
       res.cookie('auth_token',jwttoken,{
         httpOnly:true,
         expires:new Date(moment().add(31,'days')),
         overwrite: true,
       })
-
+    console.log("AAA",jwttoken);
       res.status(200).json({ 
             message: 'Login successfuly !',
-            user_id: getUserByEmailId[0].user_id,
-            user_email: getUserByEmailId[0].user_email
+           data:{ _id: getUser._id,
+            email: getUser.email,
+            username: getUser.username}
         });
       }
       else{
