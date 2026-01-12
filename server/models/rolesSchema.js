@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-mongoose.set('debug', true);
 
 // 1. Define the Schema
 const roleSchema = new mongoose.Schema({
@@ -12,7 +11,6 @@ const roleSchema = new mongoose.Schema({
   role_no: {
     type: Number,
     required: true,
-    lowercase: true
   },
   createdAt: {
     type: Date,

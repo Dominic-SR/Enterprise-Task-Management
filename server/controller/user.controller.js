@@ -2,7 +2,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import moment from 'moment';
 import User from "../models/userSchema.js"
-import {errorHandler} from "../middleware/error.js"
+// import {errorHandler} from "../middleware/error.js"
 
 export const createUser = async (req, res, next) => {
 let { username, email, password, role} = req.body;

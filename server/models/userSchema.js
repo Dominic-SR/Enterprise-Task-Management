@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-mongoose.set('debug', true);
 
 // 1. Define the Schema
 const userSchema = new mongoose.Schema({
