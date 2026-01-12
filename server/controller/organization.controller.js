@@ -33,7 +33,16 @@ export const getOrganizationById = async(req,res) =>{
         let getOrganization = await Organization.findById(req.params.id)
         res.status(201).json({ message: 'Organization fetch successfully', data: getOrganization });
     }
-    catch(err){
+    catch(error){
+        res.status(500).json({message:"Error get organization", error})
+    }
+}
+
+export const updateOrganization = async(req,res)=>{
+    try{
+
+    }
+    catch(error){
         res.status(500).json({message:"Error get organization", error})
     }
 }
