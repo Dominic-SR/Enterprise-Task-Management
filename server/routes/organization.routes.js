@@ -5,5 +5,6 @@ const router = express.Router();
 router.post('/',createOrganization)
 router.get('/',getAllOrganization)
 router.get('/:id',getOrganizationById)
+router.put("/",updateOrganization)
 
 export default router
