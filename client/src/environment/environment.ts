@@ -1,0 +1,3 @@
+const config = {
+    apiPath:"localhost"
+}
