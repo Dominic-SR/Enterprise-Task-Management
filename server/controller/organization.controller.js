@@ -41,10 +41,22 @@ export const getOrganizationById = async(req,res) =>{
 export const updateOrganization = async(req,res)=>{
     try{
            let { org_name, org_desc, org_status } = req.body
-      const updateOrganization = await Organization.updateOne({_id:req.params.id},{$set:{org_name:org_name,org_desc:org_desc,org_status:org_status}})
-      res.status(200).json(updatePerson);
+      const updateOrganization = await Organization.findOneAndUpdate({_id:req.params.id},{$set:{org_name:org_name,org_desc:org_desc,org_status:org_status}})
+      res.status(200).json({ message: 'Organization update successfully', data: updateOrganization });
     }
     catch(error){
         res.status(500).json({message:"Error get organization", error})
+    }
+}
+
+export const deleteOrganization = async(req,res)=>{
+    try{
+        console.log("nnnnn",req.params.id);
+        
+      await Organization.deleteOne({_id:req.params.id});
+      res.status(200).json({ message: 'Organization deleted successfully' });
+    }
+    catch(error){
+        res.status(500).json({message:"Error delete organization", error})
     }
 }

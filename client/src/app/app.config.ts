@@ -23,7 +23,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideStore({
-      router: routerReducer
+      router: routerReducer,
+      auth : authReducer,
     },{metaReducers}),
     provideEffects([]),
     provideStoreDevtools(),
