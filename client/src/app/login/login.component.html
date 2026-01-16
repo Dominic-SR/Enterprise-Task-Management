@@ -2,25 +2,27 @@
   <div class="auth-card">
     <h2 class="auth-title">Welcome Back</h2>
 
-    <form class="auth-form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <form class="auth-form" #f="ngform" novalidate (ngSubmit)="f.form.valid&&onSubmit()">
+      
+      
       <div class="form-field">
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" [(ngModel)]="email" required>
+        <input id="email" name="email" type="email"  required>
       </div>
 
       <div class="form-field">
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" [(ngModel)]="password" required>
+        <input id="password" name="password" type="password" required>
       </div>
 
       <!-- Display error messages from the store -->
-      <div *ngIf="error$ | async as error" class="auth-error">
+      <!-- <div *ngIf="error$ | async as error" class="auth-error">
         {{ error }}
-      </div>
+      </div> -->
 
       <!-- Disable button while loading or if form is invalid -->
-      <button class="auth-button" type="submit" [disabled]="!loginForm.valid || (isLoading$ | async)">
-        {{ (isLoading$ | async) ? 'Logging in...' : 'Login' }}
+      <button class="auth-button" type="submit">
+        Login
       </button>
     </form>
 

@@ -8,12 +8,7 @@
   "projects": {
     "client": {
       "projectType": "application",
-      "schematics": {
-        "@schematics/angular:component": {
-          "style": "scss",
-          "type": "component"
-        }
-      },
+      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -23,7 +18,6 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
@@ -31,7 +25,7 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.css"
             ]
           },
           "configurations": {

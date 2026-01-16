@@ -1,0 +1,105 @@
+<div class="board-header">
+  <div class="filter-controls">
+    <button
+      class="btn"
+    >
+      All Tasks
+    </button>
+    <button
+      class="btn"
+    >
+      My Tasks
+    </button>
+  </div>
+  <button class="btn btn-primary" >+ Create Task</button>
+</div>
+
+<div>
+  <div class="board-container" cdkDropListGroup>
+    <!-- To Do Column -->
+    <div class="column">
+      <h2 class="column-title">To Do</h2>
+      <div
+        id="todo-list"
+        class="task-list"
+        cdkDropList
+      >
+        <!-- <app-task-card
+        ></app-task-card> -->
+      </div>
+    </div>
+
+    <!-- In Progress Column -->
+    <div class="column">
+      <h2 class="column-title">In Progress</h2>
+      <div
+        id="inprogress-list"
+        class="task-list"
+      >
+        <!-- <app-task-card
+        ></app-task-card> -->
+      </div>
+    </div>
+
+    <!-- Done Column -->
+    <div class="column">
+      <h2 class="column-title">Done</h2>
+      <div
+        id="done-list"
+        class="task-list"
+      >
+        <!-- <app-task-card
+        ></app-task-card> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div >
+  <div class="board-container" cdkDropListGroup>
+    <!-- To Do Column -->
+    <div class="column">
+      <h2 class="column-title">To Do</h2>
+      <div
+        id="todo-list"
+        class="task-list"
+      >
+        <!-- <app-task-card
+        ></app-task-card> -->
+      </div>
+    </div>
+
+    <!-- In Progress Column -->
+    <div class="column">
+      <h2 class="column-title">In Progress</h2>
+      <div
+        id="inprogress-list"
+        class="task-list"
+       
+      >
+        <!-- <app-task-card
+          *ngFor="let task of myInProgressTasks$ | async"
+          (edit)="openModal(task)"
+          (delete)="onDeleteTask(task.id)"
+          [task]="task"
+          cdkDrag
+        ></app-task-card> -->
+      </div>
+    </div>
+
+    <!-- Done Column -->
+    <div class="column">
+      <h2 class="column-title">Done</h2>
+      <div
+        id="done-list"
+        class="task-list"
+      >
+        <!-- <app-task-card
+        ></app-task-card> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <app-add-edit-task  
+></app-add-edit-task> -->
