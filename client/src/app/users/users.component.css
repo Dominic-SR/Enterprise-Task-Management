@@ -104,82 +104,75 @@
   }
 }
 
-:host {
-  display: block;
-  margin-bottom: 0.75rem;
+.list-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius:15px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
-.card-container {
-  background-color: #ffffff;
-  border-radius: 5px;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  cursor: move; /* Indicates the card is draggable */
-  transition: box-shadow 0.3s cubic-bezier(.25,.8,.25,1), transform 0.2s ease-in-out;
-
-  &:hover {
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transform: translateY(-2px); /* Lifts the card slightly on hover */
-  }
+.list-container .list-content{
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.card-title {
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0 0 0.5rem 0;
-  color: #172b4d;
+.list-container .list-content img{
+    height: 40px;
+    width: 40px;
 }
 
-.card-description {
-  font-size: 0.9rem;
-  color: #5e6c84;
-  margin: 0;
-  line-height: 1.4;
+.list-container .list-content .u-name{
+    font-size: 20px;
 }
 
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 1rem;
+.list-container .group-menu-container{
+    align-items: end;
+    display: flex;
+    gap: 2px;
+    cursor: pointer;
+    position: relative;
 }
 
-/* NEW styles for the assignee avatar */
-.assignee-info {
-  flex-grow: 1; /* Pushes other footer items to the right */
+.list-container .group-menu-container span{
+    height: 5px;
+    width: 5px;
+    background: black;
 }
 
-.avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: #dfe1e6;
-  color: #172b4d;
-  font-weight: 600;
-  font-size: 0.85rem;
-  cursor: help; /* Indicates the user can hover for more info */
+.list-container .group-menu-container .group-menu-list{
+    position: absolute;
+    top: 10px;
+    right: 0px;
+    height: 0px;
+    padding: 15px;
+    visibility: hidden;
+    overflow: hidden;
+    list-style-type: none;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.delete-btn {
-  border: none;
-  background: transparent;
-  color: #6c757d;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  opacity: 0; /* Hide by default */
-  transition: opacity 0.2s;
+.list-container .group-menu-container .group-menu-list.active{
+    visibility: visible;
+    height: auto;
+    transition: all 0.4s ease;
 }
 
-/* Show delete button when hovering over the card */
-.card-container:hover .delete-btn {
-  opacity: 1;
+.list-container .group-menu-container .group-menu-list li{
+    font-size: 18px;
+    font-weight: 500;
+    margin:5px 0px;
 }
 
-.delete-btn:hover {
-  color: #dc3545;
+.red-tag{
+    background: rgb(225, 100, 100);
+    border-radius: 10px;
+    padding: 5px 20px;
+    font-size: 15px;
+    color: white;
 }

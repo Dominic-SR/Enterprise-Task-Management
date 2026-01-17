@@ -1,0 +1,87 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- <header class="modal-header"> -->
+      <h2>Create New Task</h2>
+      <button class="close-btn"></button>
+    <!-- </header> -->
+
+    <form  class="modal-body">
+      <div class="form-field">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          name="title"
+          type="text"
+         />
+      </div>
+
+      <div class="form-field">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          name="description"
+         
+          placeholder="Add a more detailed description..."
+        ></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="assignee">Assign To</label>
+        <select id="assignee" name="assignee" >
+          <option >-- Unassigned --</option>
+          <!-- <option *ngFor="let user of users$ | async" [value]="user.uid"> -->
+         <!-- Dominic
+          </option> -->
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          <option value="To Do">To Do</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Done">Done</option>
+        </select>
+      </div>
+
+      <div class="comments-section">
+        <div>
+          <h3 class="comments-title">
+            Comments <span class="comment-count">comments.length </span>
+          </h3>
+          <div class="comments-list">
+            <div class="comment">
+              <strong class="comment-author">comment.authorname</strong>
+              <p class="comment-content">comment content</p>
+              <!-- <span class="comment-date">{{
+                 date : "short"
+              }}</span> -->
+            </div>
+          </div>
+        </div>
+        <div class="comment-form">
+          <textarea
+            name="newComment"
+            placeholder="Add a comment..."
+          ></textarea>
+          <button type="button" class="btn btn-primary">
+            Submit
+          </button>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="btn btn-secondary">
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+        >
+          <!-- {{ isEditMode ? "Save Changes" : "Create Task" }} -->
+            Save Changes
+        </button>
+      </footer>
+    </form>
+  </div>
+</div>

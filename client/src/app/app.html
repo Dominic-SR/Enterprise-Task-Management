@@ -1,5 +1,11 @@
 <nav class="navbar">
   <h1>Task management</h1>
+
+  <ul class="nav-options">
+    <li (click)="navRoutes('users')">Users</li>
+    <li (click)="navRoutes('board')">Board</li>
+    <li (click)="this.logout()">Logout</li>
+  </ul>
 </nav>
 
 <main><router-outlet></router-outlet></main>

@@ -2,37 +2,43 @@
   <div class="auth-card">
     <h2 class="auth-title">Create Account</h2>
 
-    <form class="auth-form">
+    <form class="auth-form"
+    action=""
+    #f="ngForm"
+    novalidate
+    (ngSubmit)="f.form.valid&&onSubmit()"
+    >
     
     <div class="form-field">
         <label for="email">User Name</label>
-        <input id="name" name="name" type="text" [(ngModel)]="formdata.name" #name="ngModel"  required>
-        <span class="auth-error">Please enter user name ?</span>
+        <input id="" name="name" type="text" [(ngModel)]="formdata.name" #name="ngModel"  required>
+        <p class="error-text" *ngIf="this.submit&&name.errors?.['required']">Please enter user name !</p>
     </div>
 
       <div class="form-field">
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" required>
+        <input id="email" name="email" type="email" [(ngModel)]="formdata.email" #email="ngModel" required>
+        <p class="error-text" *ngIf="this.submit&&email.errors?.['required']">Please enter user email !</p>
       </div>
 
       <div class="form-field">
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" required>
+        <input id="password" name="password" type="password"  [(ngModel)]="formdata.password" #password="ngModel" required minlength="8">
+        <p class="error-text" *ngIf="this.submit&&password.errors?.['required']">Please enter password !</p>
+        <p class="error-text" *ngIf="this.submit&&password.errors?.['minlength']">Minimum length of password is 8 charecters !</p>
       </div>
 
-      <!-- Display error messages -->
-      <!-- <div *ngIf="error$ | async as error" class="auth-error">
-        {{ error }}
-      </div> -->
+      <div *ngIf="this.errorMessage" class="auth-error">
+        <p>{{errorMessage}}</p>
+      </div>
 
-      <!-- Disable button -->
-      <!-- <button class="auth-button" type="submit" [disabled]="!registerForm.valid || (isLoading$ | async)">
-        {{ (isLoading$ | async) ? 'Creating Account...' : 'Register' }}
-      </button> -->
+
+      <button class="auth-button" [disabled]="this.loading" type="submit" value="Register" (click)="submit=true" >{{ loading ? 'Creating Account...' : 'Register' }}</button>
+
     </form>
 
     <div class="auth-switch-link">
-      Already have an account? <a routerLink="/login">Login</a>
+      Already have an account? <a (click)="this.loginpage()">Login</a>
     </div>
   </div>
 </div>

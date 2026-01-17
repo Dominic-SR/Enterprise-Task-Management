@@ -2,32 +2,32 @@
   <div class="auth-card">
     <h2 class="auth-title">Welcome Back</h2>
 
-    <form class="auth-form" #f="ngform" novalidate (ngSubmit)="f.form.valid&&onSubmit()">
-      
-      
+    <form class="auth-form" 
+    #f="ngForm"
+    novalidate
+    (ngSubmit)="f.form.valid&&onSubmit()"
+    >
       <div class="form-field">
         <label for="email">Email</label>
-        <input id="email" name="email" type="email"  required>
+        <input id="email" name="email" type="email" [(ngModel)]="formdata.email" #email="ngModel" required>
+        <p class="error-text" *ngIf="this.submit&&email.errors?.['required']">Please enter user email !</p>
       </div>
 
       <div class="form-field">
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" required>
+        <input id="password" name="password" type="password" [(ngModel)]="formdata.password" #password="ngModel" required>
+        <p class="error-text" *ngIf="this.submit&&password.errors?.['required']">Please enter password !</p>
       </div>
 
-      <!-- Display error messages from the store -->
-      <!-- <div *ngIf="error$ | async as error" class="auth-error">
-        {{ error }}
-      </div> -->
+     <div *ngIf="this.errorMessage" class="auth-error">
+        <p>{{errorMessage}}</p>
+      </div>
 
-      <!-- Disable button while loading or if form is invalid -->
-      <button class="auth-button" type="submit">
-        Login
-      </button>
+      <button class="auth-button"  [disabled]="this.loading" type="submit" value="Login" (click)="submit=true" >{{ loading ? 'Loading...' : 'Login' }}</button>
     </form>
 
     <div class="auth-switch-link">
-      Need an account? <a routerLink="/register">Register</a>
+      Need an account? <a (click)="this.registerpage()">Register</a>
     </div>
   </div>
 </div>

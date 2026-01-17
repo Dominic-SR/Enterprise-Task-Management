@@ -24,8 +24,24 @@
         class="task-list"
         cdkDropList
       >
-        <!-- <app-task-card
-        ></app-task-card> -->
+        <!-- <app-task-card-->
+
+
+          <div class="card-container" >
+            <h3 class="card-title">Hiii</h3>
+            <p class="card-description">THIS IS DESC</p>
+
+            <div class="card-footer">
+              <div class="assignee-info">
+                <div class="avatar" >
+                  123
+                </div>
+              </div>
+              <button class="delete-btn" title="Delete Task">×</button>
+            </div>
+          </div>
+
+        <!--</app-task-card> -->
       </div>
     </div>
 
@@ -101,5 +117,8 @@
   </div>
 </div>
 
-<!-- <app-add-edit-task  
-></app-add-edit-task> -->
+<app-add-edit-task
+  *ngIf="isModalOpen"
+  [task]="this.editingTask"
+  (close)="closeModal()"
+></app-add-edit-task>

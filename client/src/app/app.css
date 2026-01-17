@@ -13,3 +13,14 @@
     font-size: 1.5rem;
     font-weight: 600;
 }
+
+.nav-options{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-options li{
+    cursor: pointer;
+}
