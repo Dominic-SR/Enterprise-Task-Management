@@ -19,11 +19,45 @@ let { username, email, password, role} = req.body;
             password: password,
             role: role,
     }); 
-    let addUser = await postUser.save();
-    res.status(201).json({ message: 'User added successfully' });
-  } catch (error) {
-    // next(error)
-    res.status(500).json({ message: 'Error adding user', error });
+    let saveUser = await postUser.save();
+    let jwttoken = jwt.sign({
+         _id:saveUser._id,
+         name:saveUser.username,
+         email:saveUser.email},
+          process.env.JWT_SECRET
+      )
+      res.cookie('token',jwttoken,{
+        httpOnly:true,
+        expires:new Date(moment().add(31,'days')),
+        overwrite: true,
+      })
+
+    
+    res.status(201).json({ message: 'Registed successfully', data:{ _id: saveUser._id,
+            email: saveUser.email,
+            username: saveUser.username, role: saveUser.role},
+            token:jwttoken});
+  } catch (err) {
+        // next(error)
+        if (err.name === 'CastError') {
+          return res.status(404).json({ error: 'Resource not found' });
+        }
+
+        // 2. Mongoose Duplicate Key (Error code 11000)
+        if (err.code === 11000) {
+          return res.status(400).json({ error: 'Email already exists' });
+        }
+
+        // 3. Mongoose Validation Error (Missing fields)
+        if (err.name === 'ValidationError') {
+          const message = Object.values(err.errors).map(val => val.message);
+          return res.status(400).json({ error: message });
+        }
+
+        // Default: Internal Server Error
+        res.status(err.statusCode || 500).json({
+          error: error.message || 'Server Error'
+        });
     }
   }
 
@@ -53,17 +87,18 @@ export const login = async (req,res) => {
           process.env.JWT_SECRET
       )
 
-      res.cookie('auth_token',jwttoken,{
+      res.cookie('token',jwttoken,{
         httpOnly:true,
         expires:new Date(moment().add(31,'days')),
         overwrite: true,
       })
-    console.log("AAA",jwttoken);
       res.status(200).json({ 
             message: 'Login successfuly !',
            data:{ _id: getUser._id,
             email: getUser.email,
-            username: getUser.username}
+            username: getUser.username,
+            role: saveUser.role,},
+            token:jwttoken
         });
       }
       else{

@@ -4,6 +4,17 @@ const taskSchema = new mongoose.Schema({
     task:{
         type:String,
         require:[true, "Task name is required"]
+        },
+    description:{
+        type:String
+    },
+    assignto:{
+        type:String,
+        require:true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
     }
 });
 

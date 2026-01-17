@@ -6,7 +6,7 @@ const router = express.Router()
 // const app = express();
 // app.use(express.json());
 
-router.post('/create',createUser);
+router.post('/register',createUser);
 router.post('/login',login)
 
 // app.use(errorHandler);
