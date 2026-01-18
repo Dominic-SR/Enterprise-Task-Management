@@ -80,24 +80,26 @@ export const login = async (req,res) => {
     let isCheckPassword = await bcrypt.compare(password,getUser.password)
 
     if(isCheckPassword){
+      
         let jwttoken = jwt.sign({
          _id:getUser._id,
          name:getUser.username,
          email:getUser.email},
           process.env.JWT_SECRET
-      )
+        )
+        
+        res.cookie('token',jwttoken,{
+          httpOnly:true,
+          expires:new Date(moment().add(31,'days')),
+          overwrite: true,
+        })
 
-      res.cookie('token',jwttoken,{
-        httpOnly:true,
-        expires:new Date(moment().add(31,'days')),
-        overwrite: true,
-      })
       res.status(200).json({ 
             message: 'Login successfuly !',
-           data:{ _id: getUser._id,
+            data:{ _id: getUser._id,
             email: getUser.email,
             username: getUser.username,
-            role: saveUser.role,},
+            role: getUser.role,},
             token:jwttoken
         });
       }
@@ -108,4 +110,26 @@ export const login = async (req,res) => {
     res.status(500).json({message:'somthing went wrong !'})
   }
 
+}
+
+
+export const getAllUsers = async(req,res) =>{
+
+    try{
+       let getAllUsers = await User.find();
+        res.status(201).json({ message: 'Users fetch successfully', data: getAllUsers });
+    }
+    catch(error){
+        res.status(500).json({ message: 'Error get Users', error });
+    }   
+}
+
+export const getUserById = async(req,res) =>{
+    try{
+        let getUser = await User.findById(req.params.id)
+        res.status(201).json({ message: 'User fetch successfully', data: getUser });
+    }
+    catch(error){
+        res.status(500).json({message:"Error get User", error})
+    }
 }

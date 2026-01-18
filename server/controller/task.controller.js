@@ -1,14 +1,17 @@
 import Task from "../models/taskSchema.js"
 
 export const createTask = async(req,res) =>{
-    let { task, decription, assignto } = req.body
+    let { task, description, assignto } = req.body
 
     try{
         let addTask = await new Task({
                     task:task,
-                    decription:decription,
-                    assignto: assignto
+                    description:description,
+                    assignto: assignto,
+                    status:"To Do"
             });
+            console.log("xxx",addTask);
+            
         await addTask.save();
         res.status(201).json({ message: 'Task added successfully' });
     }
@@ -40,12 +43,12 @@ export const getTaskById = async(req,res) =>{
 
 export const updateTask = async(req,res)=>{
     try{
-           let { task, decription, assignto } = req.body
-      const updateOrganization = await Organization.findOneAndUpdate({_id:req.params.id},{$set:{task:task,decription:decription,assignto:assignto}})
+      let { task, description, assignto } = req.body;
+      const updateOrganization = await Organization.findOneAndUpdate({_id:req.params.id},{$set:{task:task,description:description,assignto:assignto}});
       res.status(200).json({ message: 'Task update successfully', data: updateOrganization });
     }
     catch(error){
-        res.status(500).json({message:"Error get Task", error})
+        res.status(500).json({message:"Error Update Task", error})
     }
 }
 
