@@ -60,8 +60,17 @@ export class Auth {
     return this.http.get<{data:any}>("http://127.0.0.1:8000/api/user/")
   }
 
-  addTask(){
-    // return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/")
+  addTask(task:String, description:String, assignto:String,status:String){
+   return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/",{
+      "task":task,
+      "description":description,
+      "assignto":assignto,
+      "status":status
+    })
+  }
+
+  getAllTasks(){
+      return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/")
   }
 
   storeToken(token:string){

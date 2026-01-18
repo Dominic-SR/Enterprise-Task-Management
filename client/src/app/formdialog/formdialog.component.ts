@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../_services/auth';
 
@@ -13,13 +13,16 @@ import { Auth } from '../_services/auth';
   styleUrl: './formdialog.component.css',
 })
 export class FormdialogComponent {
-  formdata = {task:"",description:"",assignto:""}
+  formdata = {task:"",description:"",assignto:"",status:""}
   submit = false;
   errorMessage="";
   loading=false;
     allUsers:any[]=[];
 
-  constructor(private auth:Auth){}
+  constructor(
+    private auth:Auth,
+    private cdr: ChangeDetectorRef
+  ){}
 
   @Output() close = new EventEmitter<void>();
 
@@ -51,7 +54,24 @@ export class FormdialogComponent {
   }
 
    onSubmit(){
-console.log("ffff",this.formdata);
+        this.auth.addTask(this.formdata.task,this.formdata.description,this.formdata.assignto,this.formdata.status)
+        .subscribe({
+        next:(data:any)=>{
+          this.auth.storeToken(data.token);
+          localStorage.setItem('user-data',JSON.stringify(data.data))
+          this.auth.canAuthenticate()
+        },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          this.errorMessage=data.error.error;
+        }else{
+          this.errorMessage="unknow error occured in creating user !"
+        }
+        } 
+        }).add(()=>{
+         this.cdr.detectChanges(); // 4. Force UI refresh here too
+         this.onClose();
+      })
 
    }
 }

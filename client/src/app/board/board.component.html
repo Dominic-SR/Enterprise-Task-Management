@@ -26,20 +26,23 @@
       >
         <!-- <app-task-card-->
 
-
+       @for (task of allTasks; track task._id) {
           <div class="card-container" >
-            <h3 class="card-title">Hiii</h3>
-            <p class="card-description">THIS IS DESC</p>
+            <p>hhhh</p>
+            <h3 class="card-title">{{task.task}}</h3>
+            <p class="card-description">{{task.description}}</p>
 
             <div class="card-footer">
               <div class="assignee-info">
                 <div class="avatar" >
-                  123
+                  <!-- {{task.assignto}} -->
+                   DO
                 </div>
               </div>
               <button class="delete-btn" title="Delete Task">×</button>
             </div>
           </div>
+        }
 
         <!--</app-task-card> -->
       </div>
