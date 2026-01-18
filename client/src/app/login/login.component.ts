@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auth } from '../_services/auth';
@@ -20,7 +20,11 @@ export class LoginComponent {
   errorMessage="";
   loading=false;
 
-  constructor(private auth:Auth,private router:Router){}
+  constructor(
+    private auth:Auth,
+    private router:Router,
+    private cdr: ChangeDetectorRef
+  ){}
   registerpage(){
     this.router.navigate(["register"]);
   }
@@ -35,12 +39,16 @@ export class LoginComponent {
     .subscribe({
       next:(data:any)=>{
         this.auth.storeToken(data.token);
-        localStorage.setItem('user-data',JSON.stringify(data.data))
-        this.auth.canAuthenticate()
+        localStorage.setItem('user-data',JSON.stringify(data.data));
+        this.auth.canAuthenticate();
       },
       error:(data:any)=>{
-      if(data?.error?.error){
+       
+        
+      if(data?.error?.error){  
         this.errorMessage=data.error.error;
+      }else if(data?.error){
+        this.errorMessage= data?.error.message;
       }else{
         this.errorMessage="unknow error occured in creating user !"
       }
@@ -48,6 +56,8 @@ export class LoginComponent {
       },
     ).add(()=>{
       this.loading=false;
+      this.cdr.detectChanges(); // 4. Force UI refresh here too
+      console.log("Loading finalized as:", this.loading);
     })
   }
 

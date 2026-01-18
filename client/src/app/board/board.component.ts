@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { Auth } from '../_services/auth';
+import { FormdialogComponent } from "../formdialog/formdialog.component"
 
 @Component({
   selector: 'app-board',
-  imports: [],
+  imports: [FormdialogComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css',
 })
 export class BoardComponent {
   isModalOpen=false;
   editingTask=null;
+  allUsers=[];
   // editingTask : Task | null = null;
   constructor(private auth:Auth){}
 
@@ -17,9 +19,11 @@ export class BoardComponent {
     this.auth.canAccess()
   }
 
+ 
 
-  openModal(task:null){
-  this.editingTask = task;
+
+  openModal(){
+  this.editingTask =  null;
   this.isModalOpen = true;
 }
 

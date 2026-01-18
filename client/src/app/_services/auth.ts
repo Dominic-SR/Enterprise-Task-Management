@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class Auth {
  
+ 
   constructor(private router:Router, private http:HttpClient) {}
   isAuthenticated():boolean{
     if(sessionStorage.getItem('token') !== null){
@@ -55,8 +56,12 @@ export class Auth {
     )
   }
 
-  getUsers(){
-    return this.http.get<{data:any}>("http://127.0.0.1:8000/api/user/login")
+  getAllUsers(){
+    return this.http.get<{data:any}>("http://127.0.0.1:8000/api/user/")
+  }
+
+  addTask(){
+    // return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/")
   }
 
   storeToken(token:string){
