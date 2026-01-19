@@ -9,12 +9,12 @@ const assignTaskSchema = new mongoose.Schema({
         type:String,
         require:true
     },
-    createBy:{
+    task_id:{
         type:String,
         require:true
     },
-    isDelete:{
-        type:Boolean,
+    createBy:{
+        type:String,
         require:true
     },
     createdAt: {

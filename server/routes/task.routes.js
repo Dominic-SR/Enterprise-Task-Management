@@ -1,5 +1,5 @@
 import express from 'express'
-import { assignTask, createTask, deleteTask, getAllTask, getTaskById, updateTask } from '../controller/task.controller.js';
+import { assignTask, createTask, deleteTask, getAllTask, getAssignedusers, getTaskById, reAssignTask, updateTask } from '../controller/task.controller.js';
 const router = express.Router();
 
 router.post('/',createTask)
@@ -7,6 +7,8 @@ router.get('/',getAllTask)
 router.get('/:id',getTaskById)
 router.put("/:id",updateTask)
 router.delete("/:id",deleteTask)
-router.post('/assignto',assignTask)
+router.post('/assigntask',assignTask)
+router.delete('/reassigntask/:id',reAssignTask)
+router.get("/getassignedusers/:id",getAssignedusers)
 
 export default router

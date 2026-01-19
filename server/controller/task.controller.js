@@ -13,7 +13,7 @@ export const createTask = async(req,res) =>{
             });
             
         await addTask.save();
-        res.status(201).json({ message: 'Task added successfully' });
+        res.status(201).json({ message: 'Task added successfully',data:addTask });
     }
     catch(error){
         res.status(500).json({ message: 'Error adding Task', error });
@@ -63,13 +63,16 @@ export const deleteTask = async(req,res)=>{
 }
 
 export const assignTask = async(req,res) =>{
-
+    let {username, user_id,task_id,createBy} = req.body;
     try{
-        let addTask = await new AssignTask({
-                    isDelete: true
+        let assignTask = await new AssignTask({
+                    username:username,
+                    user_id:user_id,
+                    task_id:task_id,
+                    createBy:createBy
             });
             
-        await addTask.save();
+        await assignTask.save();
         res.status(200).json({ message: 'Task assigned successfully' });
     }
    
@@ -81,10 +84,20 @@ export const assignTask = async(req,res) =>{
 export const reAssignTask = async(req,res) =>{
 
     try{
-       const reAssign = await AssignTask.findOneAndUpdate({_id:req.params.id},{$set:{isDelete:false}});
+      await AssignTask.deleteOne({_id:req.params.id});
       res.status(200).json({ message:'Task re assigned successfully'});
     }
     catch(error){
         res.status(500).json({ message: 'Error adding Task assigned', error });
     }   
+}
+
+export const getAssignedusers = async(req,res)=>{
+     try{
+        let getAssignedUser = await AssignTask.find({'task_id':req.params.id})
+        res.status(201).json({ message: 'Assigned Users fetch successfully', data: getAssignedUser });
+    }
+    catch(error){
+        res.status(500).json({message:"Error get Assigned Users", error})
+    }
 }
