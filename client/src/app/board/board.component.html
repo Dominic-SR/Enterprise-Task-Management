@@ -86,5 +86,5 @@
 
 
 @if (isModalOpen) {
-  <app-formdialog (close)="closeModal()" (refreshList)="getAllTasks()"></app-formdialog>
+  <app-formdialog (close)="closeModal()" (refreshList)="getAllTasks()" [editTaskData]="editingTask"></app-formdialog>
 }

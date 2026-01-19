@@ -80,8 +80,7 @@
         <button
           type="submit" class="btn btn-primary" value="register" (click)="submit=true"
         >
-          <!-- {{ isEditMode ? "Save Changes" : "Create Task" }} -->
-            Save Changes
+          {{ editTaskData?._id?.length > 0 ? "Save Changes" : "Create Task" }}
         </button>
       </footer>
     </form>

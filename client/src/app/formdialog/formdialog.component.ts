@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../_services/auth';
 
@@ -28,12 +28,21 @@ export class FormdialogComponent {
 
   @Output() close = new EventEmitter<void>();
   @Output() refreshList = new EventEmitter<void>();
+  @Input() editTaskData: any = [];
 
   ngOnInit(): void{
     this.auth.canAccess()
     this.getAllUsers()
     this.userRole=this.auth.authData?.role;
-    this.userId=this.auth.authData?._id
+    this.userId=this.auth.authData?.task_id
+    console.log("XXX",this.editTaskData._id.length);
+    
+    if(this?.editTaskData){
+        this.formdata.task=this.editTaskData.task;
+        this.formdata.description=this.editTaskData.description;
+        this.formdata.status=this.editTaskData.status;
+        this.formdata.assignto=this.editTaskData.assignto;
+    }
   }
 
   onClose(): void {
