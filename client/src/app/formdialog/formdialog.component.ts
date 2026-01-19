@@ -13,11 +13,12 @@ import { Auth } from '../_services/auth';
   styleUrl: './formdialog.component.css',
 })
 export class FormdialogComponent {
-  formdata = {task:"",description:"",createBy:"",status:"To Do",assignto:[]}
+  formdata = {task:"",description:"",status:"To Do",assignto:[]}
   submit = false;
   errorMessage="";
   loading=false;
   userRole=""
+  userId=""
   allUsers:any[]=[];
 
   constructor(
@@ -32,6 +33,7 @@ export class FormdialogComponent {
     this.auth.canAccess()
     this.getAllUsers()
     this.userRole=this.auth.authData?.role;
+    this.userId=this.auth.authData?._id
   }
 
   onClose(): void {
@@ -53,28 +55,69 @@ export class FormdialogComponent {
           console.log("unknow error occured in creating user !")
         }
         } 
+        }
+      )
+  }
+
+  assignedTask(username:string,user_id:string,task_id:string,createBy:string){
+  
+      this.auth.assignTask(username,user_id,task_id,createBy)
+    .subscribe({
+        next:(data:any)=>{
+            this.refreshList.emit();
+            this.onClose();
         },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          console.log("Err",data.error.error);
+          
+        }else{
+          console.log("unknow error occured in creating user !")
+        }
+        } 
+        }
+      )
+  }
+
+  getUserDetails(_id:string,createBy:string,task_id:string){
+    this.auth.getUserById(_id)
+    .subscribe({
+        next:(data:any)=>{
+          console.log("XXX",data);
+          
+            this.assignedTask(data?.data?.username, data?.data?._id, task_id, createBy)
+        },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          console.log("Err",data.error.error);
+          
+        }else{
+          console.log("unknow error occured in creating user !")
+        }
+        } 
+        }
       )
   }
 
    onSubmit(){
-    console.log("XXX",this.formdata);
-    
-        // this.auth.addTask(this.formdata.task,this.formdata.description,this.userRole && this.userRole,this.formdata.status)
-        // .subscribe({
-        // next:(res:any)=>{
-        // this.refreshList.emit();
-        // this.onClose();
+
+        this.auth.addTask(this.formdata.task,this.formdata.description,this.formdata.status)
+        .subscribe({
+        next:(res:any)=>{
+          console.log("ZZZZ",res)
+          this.formdata.assignto?.map((_id)=>(
+            this.getUserDetails(_id,this.userId,res.data._id)
+          ))
         
-        // },
-        // error:(data:any)=>{
-        // if(data?.error?.error){
-        //   this.errorMessage=data.error.error;
-        // }else{
-        //   this.errorMessage="unknow error occured in creating user !"
-        // }
-        // } 
-        // })
+        },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          this.errorMessage=data.error.error;
+        }else{
+          this.errorMessage="unknow error occured in creating user !"
+        }
+        } 
+        })
 
    }
 }

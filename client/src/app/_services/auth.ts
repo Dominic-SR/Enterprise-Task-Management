@@ -19,6 +19,10 @@ export class Auth {
     return false;
   }
 
+  storeToken(token:string){
+      sessionStorage.setItem('token',token)
+  }
+
   canAccess(){
       if(!this.isAuthenticated()){
         this.router.navigate(["login"]);
@@ -63,11 +67,14 @@ export class Auth {
     return this.http.get<{data:any}>("http://127.0.0.1:8000/api/user/")
   }
 
-  addTask(task:String, description:String, assignto:String,status:String){
+  getUserById(_id:String){
+    return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/user/${_id}`)
+  }
+
+  addTask(task:String, description:String,status:String){
    return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/",{
       "task":task,
       "description":description,
-      "assignto":assignto,
       "status":status
     })
   }
@@ -76,11 +83,29 @@ export class Auth {
       return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/")
   }
 
+  getTaskById(task_id:string){
+    return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/${task_id}`)
+  }
+
   deleteTask(task_id:String){
     return this.http.delete<({response:String})>(`http://127.0.0.1:8000/api/task/${task_id}`)
   }
 
-  storeToken(token:string){
-      sessionStorage.setItem('token',token)
+  assignTask(username:string,user_id:string,task_id:string,createdBy:string){
+    return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/assigntask",{
+      "username":username,
+      "user_id":user_id,
+      "task_id":task_id,
+      "createdBy":createdBy
+    })
   }
+
+  getAssignedUsers(task_id:String){
+      return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/getassignedusers/${task_id}`)
+  }
+
+  reAssignTask(assign_id:String){
+    return this.http.delete<{data:any}>(`http://127.0.0.1:8000/api/task/reassigntask/${assign_id}`)
+  }
+  
 }

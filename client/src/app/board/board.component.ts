@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class BoardComponent {
   isModalOpen=false;
   editingTask=null;
+  assignees: { [taskId: string]: any } = {};
   allTasks:any[]=[];
   // editingTask : Task | null = null;
   constructor(
@@ -44,6 +45,12 @@ export class BoardComponent {
       .subscribe({
         next:(data:any)=>{
           this.allTasks=data.data
+
+          data.data.forEach((task:any) => {
+            this.getAssignedPersons(task._id);
+            
+            
+          });
         },
         error:(data:any)=>{
         if(data?.error?.error){
@@ -59,7 +66,31 @@ export class BoardComponent {
       })
   }
 
-  deleteTask(task_id:String){
+  getAssignedPersons(task_id:string){
+    this.auth.getAssignedUsers(task_id)
+      .subscribe({
+        next:(data:any)=>{
+          this.assignees[task_id]=data.data;
+          
+        },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          console.log("Err",data.error.error);
+        }else{
+          console.log("unknow error occured in creating user !")
+        }
+        } 
+        },
+      ).add(()=>{
+         this.cdr.detectChanges(); // 4. Force UI refresh here too
+      })
+  }
+
+  editTask(task_id:string){
+    this.openModal()
+  }
+
+  deleteTask(task_id:string){
     
     this.auth.deleteTask(task_id)
       .subscribe({
