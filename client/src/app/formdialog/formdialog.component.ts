@@ -13,11 +13,12 @@ import { Auth } from '../_services/auth';
   styleUrl: './formdialog.component.css',
 })
 export class FormdialogComponent {
-  formdata = {task:"",description:"",assignto:"",status:""}
+  formdata = {task:"",description:"",createBy:"",status:"To Do",assignto:[]}
   submit = false;
   errorMessage="";
   loading=false;
-    allUsers:any[]=[];
+  userRole=""
+  allUsers:any[]=[];
 
   constructor(
     private auth:Auth,
@@ -25,10 +26,12 @@ export class FormdialogComponent {
   ){}
 
   @Output() close = new EventEmitter<void>();
+  @Output() refreshList = new EventEmitter<void>();
 
   ngOnInit(): void{
     this.auth.canAccess()
     this.getAllUsers()
+    this.userRole=this.auth.authData?.role;
   }
 
   onClose(): void {
@@ -40,6 +43,7 @@ export class FormdialogComponent {
       .subscribe({
         next:(data:any)=>{
           this.allUsers=data.data
+          this.cdr.detectChanges();
         },
         error:(data:any)=>{
         if(data?.error?.error){
@@ -54,24 +58,23 @@ export class FormdialogComponent {
   }
 
    onSubmit(){
-        this.auth.addTask(this.formdata.task,this.formdata.description,this.formdata.assignto,this.formdata.status)
-        .subscribe({
-        next:(data:any)=>{
-          this.auth.storeToken(data.token);
-          localStorage.setItem('user-data',JSON.stringify(data.data))
-          this.auth.canAuthenticate()
-        },
-        error:(data:any)=>{
-        if(data?.error?.error){
-          this.errorMessage=data.error.error;
-        }else{
-          this.errorMessage="unknow error occured in creating user !"
-        }
-        } 
-        }).add(()=>{
-         this.cdr.detectChanges(); // 4. Force UI refresh here too
-         this.onClose();
-      })
+    console.log("XXX",this.formdata);
+    
+        // this.auth.addTask(this.formdata.task,this.formdata.description,this.userRole && this.userRole,this.formdata.status)
+        // .subscribe({
+        // next:(res:any)=>{
+        // this.refreshList.emit();
+        // this.onClose();
+        
+        // },
+        // error:(data:any)=>{
+        // if(data?.error?.error){
+        //   this.errorMessage=data.error.error;
+        // }else{
+        //   this.errorMessage="unknow error occured in creating user !"
+        // }
+        // } 
+        // })
 
    }
 }

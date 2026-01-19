@@ -163,7 +163,12 @@
   cursor: help; /* Indicates the user can hover for more info */
 }
 
-.delete-btn {
+.button-container{
+  display: flex;
+  gap: 10px;
+}
+
+.delete-btn,.edit-btn {
   border: none;
   background: transparent;
   color: #6c757d;
@@ -176,10 +181,6 @@
 }
 
 /* Show delete button when hovering over the card */
-.card-container:hover .delete-btn {
+.card-container:hover .delete-btn, .card-container:hover .edit-btn {
   opacity: 1;
-}
-
-.delete-btn:hover {
-  color: #dc3545;
 }

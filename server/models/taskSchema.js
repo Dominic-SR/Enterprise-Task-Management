@@ -8,7 +8,7 @@ const taskSchema = new mongoose.Schema({
     description:{
         type:String
     },
-    assignto:{
+    createBy:{
         type:String,
         require:true
     },

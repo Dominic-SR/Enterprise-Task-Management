@@ -1,16 +1,16 @@
 import Task from "../models/taskSchema.js"
+import AssignTask from "../models/assignTaskSchema.js";
 
 export const createTask = async(req,res) =>{
-    let { task, description, assignto } = req.body
+    let { task, description, createBy } = req.body
 
     try{
         let addTask = await new Task({
                     task:task,
                     description:description,
-                    assignto: assignto,
+                    createBy: createBy,
                     status:"To Do"
             });
-            console.log("xxx",addTask);
             
         await addTask.save();
         res.status(201).json({ message: 'Task added successfully' });
@@ -43,8 +43,8 @@ export const getTaskById = async(req,res) =>{
 
 export const updateTask = async(req,res)=>{
     try{
-      let { task, description, assignto } = req.body;
-      const updateOrganization = await Organization.findOneAndUpdate({_id:req.params.id},{$set:{task:task,description:description,assignto:assignto}});
+      let { task, description, createBy } = req.body;
+      const updateOrganization = await Task.findOneAndUpdate({_id:req.params.id},{$set:{task:task,description:description,createBy:createBy}});
       res.status(200).json({ message: 'Task update successfully', data: updateOrganization });
     }
     catch(error){
@@ -60,4 +60,31 @@ export const deleteTask = async(req,res)=>{
     catch(error){
         res.status(500).json({message:"Error delete Task", error})
     }
+}
+
+export const assignTask = async(req,res) =>{
+
+    try{
+        let addTask = await new AssignTask({
+                    isDelete: true
+            });
+            
+        await addTask.save();
+        res.status(200).json({ message: 'Task assigned successfully' });
+    }
+   
+    catch(error){
+        res.status(500).json({ message: 'Error adding Task assigned', error });
+    }   
+}
+
+export const reAssignTask = async(req,res) =>{
+
+    try{
+       const reAssign = await AssignTask.findOneAndUpdate({_id:req.params.id},{$set:{isDelete:false}});
+      res.status(200).json({ message:'Task re assigned successfully'});
+    }
+    catch(error){
+        res.status(500).json({ message: 'Error adding Task assigned', error });
+    }   
 }

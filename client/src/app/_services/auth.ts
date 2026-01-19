@@ -7,10 +7,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class Auth {
  
- 
+  authData: any = null;
   constructor(private router:Router, private http:HttpClient) {}
+  
   isAuthenticated():boolean{
+    const rawData = localStorage.getItem("user-data");
     if(sessionStorage.getItem('token') !== null){
+      this.authData = rawData ? JSON.parse(rawData) : null;
       return true;
     }
     return false;
@@ -71,6 +74,10 @@ export class Auth {
 
   getAllTasks(){
       return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/")
+  }
+
+  deleteTask(task_id:String){
+    return this.http.delete<({response:String})>(`http://127.0.0.1:8000/api/task/${task_id}`)
   }
 
   storeToken(token:string){
