@@ -28,14 +28,13 @@ export class FormdialogComponent {
 
   @Output() close = new EventEmitter<void>();
   @Output() refreshList = new EventEmitter<void>();
-  @Input() editTaskData: any = [];
+  @Input() editTaskData: any = {};
 
   ngOnInit(): void{
     this.auth.canAccess()
     this.getAllUsers()
     this.userRole=this.auth.authData?.role;
-    this.userId=this.auth.authData?.task_id
-    console.log("XXX",this.editTaskData._id.length);
+    this.userId=this.auth.authData?.task_id;
     
     if(this?.editTaskData){
         this.formdata.task=this.editTaskData.task;
@@ -92,8 +91,6 @@ export class FormdialogComponent {
     this.auth.getUserById(_id)
     .subscribe({
         next:(data:any)=>{
-          console.log("XXX",data);
-          
             this.assignedTask(data?.data?.username, data?.data?._id, task_id, createBy)
         },
         error:(data:any)=>{
@@ -109,11 +106,27 @@ export class FormdialogComponent {
   }
 
    onSubmit(){
-
+    
+  if(Object.keys(this.editTaskData).length > 0){
+ 
+      this.auth.updateTask(this.editTaskData?._id,this.formdata.task,this.formdata.description,this.formdata.status)
+        .subscribe({
+        next:(res:any)=>{
+           this.refreshList.emit();
+            this.onClose();
+        },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          this.errorMessage=data.error.error;
+        }else{
+          this.errorMessage="unknow error occured in creating user !"
+        }
+        } 
+        })
+  }else{
         this.auth.addTask(this.formdata.task,this.formdata.description,this.formdata.status)
         .subscribe({
         next:(res:any)=>{
-          console.log("ZZZZ",res)
           this.formdata.assignto?.map((_id)=>(
             this.getUserDetails(_id,this.userId,res.data._id)
           ))
@@ -127,6 +140,6 @@ export class FormdialogComponent {
         }
         } 
         })
-
-   }
+      }
+    }
 }

@@ -16,6 +16,9 @@ export class BoardComponent {
   isModalOpen=false;
   assignees: { [taskId: string]: any } = {};
   allTasks:any[]=[];
+  toDoTask:any[]=[];
+  inProgressTask:any[]=[];
+  doneTask:any[]=[];
   editingTask:any []= [];
   getAssignPersonsData=[]
   constructor(
@@ -43,13 +46,28 @@ export class BoardComponent {
      this.auth.getAllTasks()
       .subscribe({
         next:(data:any)=>{
-          this.allTasks=data.data
+          this.allTasks=data.data;
+          
+          const categorized = this.allTasks.reduce((acc, task) => {
+          if (task.status === "To Do") acc.todo.push(task);
+          else if (task.status === "In Progress") acc.inprogress.push(task);
+          else if (task.status === "Done") acc.done.push(task);
+          return acc;
+          }, { todo: [], inprogress: [], done: [] });
 
-          data.data.forEach((task:any) => {
-           this.getAssignedPersons(task._id);
-            this.assignees[task._id] = this.getAssignPersonsData;
-            
-          });
+          // Assign them back to your class properties
+          this.toDoTask = categorized.todo;
+          this.inProgressTask = categorized.inprogress;
+          this.doneTask = categorized.done;
+
+          // ASSIGN USERS FUNCTION NOT WORKING
+          // data.data.forEach((task:any) => {
+          //  this.getAssignedPersons(task._id);
+          //   this.assignees[task._id] = this.getAssignPersonsData;
+          // });/
+
+          console.log("QQQQ",this.allTasks);
+          
         },
         error:(data:any)=>{
         if(data?.error?.error){

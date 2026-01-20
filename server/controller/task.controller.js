@@ -43,8 +43,8 @@ export const getTaskById = async(req,res) =>{
 
 export const updateTask = async(req,res)=>{
     try{
-      let { task, description, createBy } = req.body;
-      const updateOrganization = await Task.findOneAndUpdate({_id:req.params.id},{$set:{task:task,description:description,createBy:createBy}});
+      let { task, description, status, createBy } = req.body;
+      const updateOrganization = await Task.findOneAndUpdate({_id:req.params.id},{$set:{task:task,description:description,status:status, createBy:createBy}});
       res.status(200).json({ message: 'Task update successfully', data: updateOrganization });
     }
     catch(error){

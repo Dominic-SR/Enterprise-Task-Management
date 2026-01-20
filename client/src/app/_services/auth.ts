@@ -79,6 +79,14 @@ export class Auth {
     })
   }
 
+  updateTask(task_id:string,task:String, description:String,status:String){
+    return this.http.put<{data:any}>(`http://127.0.0.1:8000/api/task/${task_id}`,{
+      "task":task,
+      "description":description,
+      "status":status
+    })
+  }
+
   getAllTasks(){
       return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/")
   }
