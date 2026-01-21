@@ -42,6 +42,28 @@ export class BoardComponent {
     this.editingTask=[]
   }
 
+    getAssignedPersons(task_id:string){
+    this.auth.getAssignedUsers(task_id)
+      .subscribe({
+        next:(data:any)=>{
+          this.getAssignPersonsData= data.data;
+          this.assignees[task_id] = data.data;
+         this.cdr.detectChanges();
+          console.log("Data assigned to task:", task_id, data.data);
+        },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          console.log("Err",data.error.error);
+        }else{
+          console.log("unknow error occured in creating user !")
+        }
+        } 
+        },
+      ).add(()=>{
+         this.cdr.detectChanges(); // 4. Force UI refresh here too
+      })
+  }
+
   getAllTasks(){
      this.auth.getAllTasks()
       .subscribe({
@@ -59,15 +81,20 @@ export class BoardComponent {
           this.toDoTask = categorized.todo;
           this.inProgressTask = categorized.inprogress;
           this.doneTask = categorized.done;
+  
+          console.log("Before call")    
 
-          // ASSIGN USERS FUNCTION NOT WORKING
-          // data.data.forEach((task:any) => {
+          // Create an array of requests
+         this.allTasks.forEach((task: any) => {
+            this.getAssignedPersons(task._id);
+          });
+          
+          // this.allTasks.forEach((task:any) => {
+          //    console.log("Before CALL")
           //  this.getAssignedPersons(task._id);
           //   this.assignees[task._id] = this.getAssignPersonsData;
-          // });/
-
-          console.log("QQQQ",this.allTasks);
-          
+          //   console.log("AFter CALL",this.getAssignPersonsData);
+          // });
         },
         error:(data:any)=>{
         if(data?.error?.error){
@@ -83,24 +110,7 @@ export class BoardComponent {
       })
   }
 
-  getAssignedPersons(task_id:string){
-    this.auth.getAssignedUsers(task_id)
-      .subscribe({
-        next:(data:any)=>{
-          this.getAssignPersonsData= data.data;
-        },
-        error:(data:any)=>{
-        if(data?.error?.error){
-          console.log("Err",data.error.error);
-        }else{
-          console.log("unknow error occured in creating user !")
-        }
-        } 
-        },
-      ).add(()=>{
-         this.cdr.detectChanges(); // 4. Force UI refresh here too
-      })
-  }
+
 
   editTask(task_id:string){
    

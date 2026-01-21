@@ -106,6 +106,7 @@ export class FormdialogComponent {
   }
 
    onSubmit(){
+ console.log("cccc",this.formdata);
     
   if(Object.keys(this.editTaskData).length > 0){
  
@@ -130,7 +131,6 @@ export class FormdialogComponent {
           this.formdata.assignto?.map((_id)=>(
             this.getUserDetails(_id,this.userId,res.data._id)
           ))
-        
         },
         error:(data:any)=>{
         if(data?.error?.error){
