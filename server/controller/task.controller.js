@@ -2,14 +2,14 @@ import Task from "../models/taskSchema.js"
 import AssignTask from "../models/assignTaskSchema.js";
 
 export const createTask = async(req,res) =>{
-    let { task, description, createBy } = req.body
+    let { task, description, createBy, status } = req.body
 
     try{
         let addTask = await new Task({
                     task:task,
                     description:description,
                     createBy: createBy,
-                    status:"To Do"
+                    status:status
             });
             
         await addTask.save();
