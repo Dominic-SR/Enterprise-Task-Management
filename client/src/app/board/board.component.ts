@@ -28,8 +28,6 @@ export class BoardComponent {
 
   ngOnInit(): void{
     this.auth.canAccess()
-    console.log("trigger");
-    
     this.getAllTasks()
   }
 
@@ -48,8 +46,9 @@ export class BoardComponent {
         next:(data:any)=>{
           this.getAssignPersonsData= data.data;
           this.assignees[task_id] = data.data;
+          console.log(">>>>",this.assignees);
+          
          this.cdr.detectChanges();
-          console.log("Data assigned to task:", task_id, data.data);
         },
         error:(data:any)=>{
         if(data?.error?.error){
@@ -81,9 +80,6 @@ export class BoardComponent {
           this.toDoTask = categorized.todo;
           this.inProgressTask = categorized.inprogress;
           this.doneTask = categorized.done;
-  
-          console.log("Before call")    
-
           // Create an array of requests
          this.allTasks.forEach((task: any) => {
             this.getAssignedPersons(task._id);

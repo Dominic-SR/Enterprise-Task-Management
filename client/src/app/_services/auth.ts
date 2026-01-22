@@ -99,12 +99,11 @@ export class Auth {
     return this.http.delete<({response:String})>(`http://127.0.0.1:8000/api/task/${task_id}`)
   }
 
-  assignTask(username:string,user_id:string,task_id:string,createdBy:string){
+  assignTask(username:string,user_id:string,task_id:string){
     return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/assigntask",{
       "username":username,
       "user_id":user_id,
-      "task_id":task_id,
-      "createdBy":createdBy
+      "task_id":task_id
     })
   }
 
@@ -112,6 +111,7 @@ export class Auth {
       return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/getassignedusers/${task_id}`)
   }
 
+  
   reAssignTask(assign_id:String){
     return this.http.delete<{data:any}>(`http://127.0.0.1:8000/api/task/reassigntask/${assign_id}`)
   }

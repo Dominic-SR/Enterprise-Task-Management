@@ -13,13 +13,14 @@ import { Auth } from '../_services/auth';
   styleUrl: './formdialog.component.css',
 })
 export class FormdialogComponent {
-  formdata = {task:"",description:"",status:"To Do",assignto:[]}
+  formdata = {task:"",description:"",status:"To Do",assignto:[] as any[]}
   submit = false;
   errorMessage="";
   loading=false;
   userRole=""
   userId=""
   allUsers:any[]=[];
+  assignedUsers:any[]=[]
 
   constructor(
     private auth:Auth,
@@ -37,15 +38,36 @@ export class FormdialogComponent {
     this.userId=this.auth.authData?.task_id;
     
     if(this?.editTaskData){
+        this?.editTaskData?._id && this.getAssignedPersons(this?.editTaskData?._id)
         this.formdata.task=this.editTaskData.task;
         this.formdata.description=this.editTaskData.description;
         this.formdata.status=this.editTaskData.status;
-        this.formdata.assignto=this.editTaskData.assignto;
+        this.formdata.assignto=this.assignedUsers;
     }
   }
 
   onClose(): void {
     this.close.emit();
+  }
+
+  getAssignedPersons(task_id:string){
+      this.auth.getAssignedUsers(task_id)
+      .subscribe({
+        next:(data:any)=>{
+        data.data.map((i: any) => this.assignedUsers.push(i.user_id));
+        this.cdr.detectChanges();
+        },
+        error:(data:any)=>{
+        if(data?.error?.error){
+          console.log("Err",data.error.error);
+        }else{
+          console.log("unknow error occured in creating user !")
+        }
+        } 
+        },
+      ).add(()=>{
+         this.cdr.detectChanges(); // 4. Force UI refresh here too
+      })
   }
 
    getAllUsers(){
@@ -67,9 +89,9 @@ export class FormdialogComponent {
       )
   }
 
-  assignedTask(username:string,user_id:string,task_id:string,createBy:string){
+  assignedTask(username:string,user_id:string,task_id:string){
   
-      this.auth.assignTask(username,user_id,task_id,createBy)
+      this.auth.assignTask(username,user_id,task_id)
     .subscribe({
         next:(data:any)=>{
             this.refreshList.emit();
@@ -87,11 +109,13 @@ export class FormdialogComponent {
       )
   }
 
-  getUserDetails(_id:string,createBy:string,task_id:string){
+  getUserDetailsForAssignUsers(_id:string,task_id:string){
     this.auth.getUserById(_id)
     .subscribe({
         next:(data:any)=>{
-            this.assignedTask(data?.data?.username, data?.data?._id, task_id, createBy)
+            // let filterUsers = data?.filter((data:any)=>data?._id !== data?._id)
+            //             console.log("after filte", filterUsers);
+            this.assignedTask(data?.data?.username, data?.data?._id, task_id)
         },
         error:(data:any)=>{
         if(data?.error?.error){
@@ -106,15 +130,18 @@ export class FormdialogComponent {
   }
 
    onSubmit(){
- console.log("cccc",this.formdata);
-    
   if(Object.keys(this.editTaskData).length > 0){
  
       this.auth.updateTask(this.editTaskData?._id,this.formdata.task,this.formdata.description,this.formdata.status)
         .subscribe({
-        next:(res:any)=>{
-           this.refreshList.emit();
-            this.onClose();
+        next:(taskData:any)=>{
+          this.formdata.assignto?.map((user_id)=>(  
+            console.log(">>>",user_id)
+            
+            // this.getUserDetailsForAssignUsers(user_id,taskData._id)
+          ))
+          this.refreshList.emit();
+          this.onClose();
         },
         error:(data:any)=>{
         if(data?.error?.error){
@@ -127,10 +154,12 @@ export class FormdialogComponent {
   }else{
         this.auth.addTask(this.formdata.task,this.formdata.description,this.formdata.status)
         .subscribe({
-        next:(res:any)=>{
-          this.formdata.assignto?.map((_id)=>(
-            this.getUserDetails(_id,this.userId,res.data._id)
+        next:(taskData:any)=>{
+          this.formdata.assignto?.map((user_id)=>(
+            this.getUserDetailsForAssignUsers(user_id,taskData?._id)
           ))
+          this.refreshList.emit();
+          this.onClose();
         },
         error:(data:any)=>{
         if(data?.error?.error){
