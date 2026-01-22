@@ -90,6 +90,7 @@ export class FormdialogComponent {
   }
 
   assignedTask(username:string,user_id:string,task_id:string){
+  console.log("DDASSS",task_id);
   
       this.auth.assignTask(username,user_id,task_id)
     .subscribe({
@@ -136,9 +137,7 @@ export class FormdialogComponent {
         .subscribe({
         next:(taskData:any)=>{
           this.formdata.assignto?.map((user_id)=>(  
-            console.log(">>>",user_id)
-            
-            // this.getUserDetailsForAssignUsers(user_id,taskData._id)
+            this.getUserDetailsForAssignUsers(user_id,taskData?.data?._id)
           ))
           this.refreshList.emit();
           this.onClose();
@@ -156,7 +155,7 @@ export class FormdialogComponent {
         .subscribe({
         next:(taskData:any)=>{
           this.formdata.assignto?.map((user_id)=>(
-            this.getUserDetailsForAssignUsers(user_id,taskData?._id)
+            this.getUserDetailsForAssignUsers(user_id,taskData?.data?._id)
           ))
           this.refreshList.emit();
           this.onClose();
