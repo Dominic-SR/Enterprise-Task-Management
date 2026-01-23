@@ -1,8 +1,9 @@
 import express from 'express'
 import { assignTask, createTask, deleteTask, getAllTask, getAssignedusers, getTaskById, reAssignTask, updateTask } from '../controller/task.controller.js';
+import { Auth } from "../middleware/authentication.js";
 const router = express.Router();
 
-router.post('/',createTask)
+router.post('/',Auth(),createTask)
 router.get('/',getAllTask)
 router.get('/:id',getTaskById)
 router.put("/:id",updateTask)
