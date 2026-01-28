@@ -3,13 +3,13 @@ import { assignTask, createTask, deleteTask, getAllTask, getAssignedusers, getTa
 import { Auth } from "../middleware/authentication.js";
 const router = express.Router();
 
-router.post('/',createTask)
+router.post('/',Auth(),createTask)
 router.get('/',Auth(),getAllTask)
-router.get('/:id',getTaskById)
-router.put("/:id",updateTask)
-router.delete("/:id",deleteTask)
-router.post('/assigntask',assignTask)
-router.delete('/reassigntask/:id',reAssignTask)
-router.get("/getassignedusers/:id",getAssignedusers)
+router.get('/:id',Auth(),getTaskById)
+router.put("/:id",Auth(),updateTask)
+router.delete("/:id",Auth(),deleteTask)
+router.post('/assigntask',Auth(),assignTask)
+router.delete('/reassigntask/:id',Auth(),reAssignTask)
+router.get("/getassignedusers/:id",Auth(),getAssignedusers)
 
 export default router
