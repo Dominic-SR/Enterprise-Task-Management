@@ -53,9 +53,10 @@
 // module.exports = {Auth}
 
 import jwt from 'jsonwebtoken';
-import { getUser } from '../Models/User.Model.js';
+// import { getUser } from '../Models/User.Model.js';
 
 export const Auth = () => async (req, res, next) => {
+    
     try {
         const authHeader = req.headers.authorization;
         
@@ -70,7 +71,8 @@ export const Auth = () => async (req, res, next) => {
         // 2. Verify Token
         // Note: If using "Bearer <token>", use authHeader.split(' ')[1]
         const decoded = jwt.verify(authHeader, process.env.JWT_SECRET);
-        
+        console.log("XXX",decoded);
+
         // 3. Fetch User Data
         const userData = await getUser(decoded.user_id);
 
@@ -81,11 +83,6 @@ export const Auth = () => async (req, res, next) => {
             req.user = {
                 user_id: decoded.user_id,
                 user_name: user.user_name,
-                user_email: user.user_email,
-                user_mobile: user.user_mobile,
-                role_id: user.role_id,
-                user_img: user.user_img,
-                user_about: user.user_about
             };
             
             return next();
