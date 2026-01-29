@@ -2,8 +2,7 @@
 
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/master/icons/jira.svg" width="100" alt="Jira Logo" />
-  <h1>MEAN Stack Jira Clone</h1>
+   <h1>MEAN Stack Jira Clone</h1>
   
   <p>A high-performance Agile Project Management tool built with MongoDB, Express, Angular, and Node.js.</p>
 
