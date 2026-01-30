@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,9 @@ import { HttpClient } from '@angular/common/http';
 export class Auth {
  
   authData: any = null;
+  token=sessionStorage.getItem("token");
   constructor(private router:Router, private http:HttpClient) {}
-  
+
   isAuthenticated():boolean{
     const rawData = localStorage.getItem("user-data");
     if(sessionStorage.getItem('token') !== null){
@@ -88,11 +89,21 @@ export class Auth {
   }
 
   getAllTasks(){
-      return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/")
+          console.log("XXX",this.token);
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      });
+      return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/",{headers})
   }
 
   getTaskById(task_id:string){
-    return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/${task_id}`)
+
+    const headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.token}`
+  });
+
+  
+    return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/${task_id}`,{headers})
   }
 
   deleteTask(task_id:String){
