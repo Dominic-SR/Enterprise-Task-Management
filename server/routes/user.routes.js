@@ -1,5 +1,6 @@
 import express from 'express'
 import { createUser, getAllUsers, getUserById, login } from "../controller/user.controller.js"
+import { Auth } from "../middleware/authentication.js";
 // import { uploadSingleFile } from '../middleware/fileUpload.js';
 // import { errorHandler } from '../middleware/error.js';
 const router = express.Router()
@@ -8,7 +9,7 @@ const router = express.Router()
 
 router.post('/register',createUser);
 router.post('/login',login)
-router.get("/",getAllUsers)
-router.get("/:id",getUserById)
+router.get("/",Auth(),getAllUsers)
+router.get("/:id",Auth(),getUserById)
 // app.use(errorHandler);
 export default router;
