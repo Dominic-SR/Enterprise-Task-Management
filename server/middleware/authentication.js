@@ -4,6 +4,7 @@ export const Auth = () => async (req, res, next) => {
     
     try {
         const authHeader = req.headers.auth;
+console.log("MMMM",authHeader);
 
         // 1. Check if token exists
         if (!authHeader) {
@@ -12,13 +13,14 @@ export const Auth = () => async (req, res, next) => {
                 message: "No token provided."
             });
         }
-
         // 2. Verify Token
         // Note: If using "Bearer <token>", use authHeader.split(' ')[1]
         const decoded = jwt.verify(authHeader, process.env.JWT_SECRET);
-        
         // 3. Fetch User Data
+        console.log("token decode--->",decoded);
+        
         const getUser = await User.findById(decoded._id)
+        console.log("get token users-->",getUser);
         
         // Check if user exists in DB (assuming userData[0][0] structure)
         if (Object.values(getUser).length > 0) {
