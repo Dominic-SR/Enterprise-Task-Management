@@ -32,8 +32,14 @@
           name="description"
           [(ngModel)]="formdata.description" 
           #description="ngModel"
+          required
+          minlength="10"
           placeholder="Add a more detailed description..."
         ></textarea>
+        <div *ngIf="this.submit && description.invalid">
+        <p class="error-text" *ngIf="description.errors?.['required']">Description is required!</p>
+        <p class="error-text" *ngIf="description.errors?.['minlength']">Must be at least 10 characters.</p>
+      </div>
       </div>
 
 
@@ -41,23 +47,31 @@
   <label for="assignto">Assign To (Hold Ctrl/Cmd to select multiple)</label>
   <select 
     id="assignto" 
-    name="assignto" 
+    name="assignto"
+    #assignto="ngModel" 
     [(ngModel)]="formdata.assignto" 
+    required
     multiple> @for (user of allUsers; track user._id) {
       <option [value]="user._id">
         {{ user.username }}
       </option>
     }
   </select>
+  <p class="error-text" *ngIf="this.submit && assignto.errors?.['required']">
+    Please select a assigned users!
+  </p>
 </div>
 
       <div class="form-field">
         <label for="status">Status</label>
-        <select id="status" name="status" [(ngModel)]="formdata.status">
+        <select id="status" name="status" #status="ngModel" [(ngModel)]="formdata.status" required>
           <option value="To Do">To Do</option>
           <option value="In Progress">In Progress</option>
           <option value="Done">Done</option>
         </select>
+        <p class="error-text" *ngIf="this.submit && status.errors?.['required']">
+          Please select a status!
+        </p>
       </div>
 
       <footer class="modal-footer">

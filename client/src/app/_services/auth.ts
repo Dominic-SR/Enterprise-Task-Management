@@ -9,6 +9,7 @@ export class Auth {
  
   authData: any = null;
   token=sessionStorage.getItem("token");
+  
   constructor(private router:Router, private http:HttpClient) {}
 
   isAuthenticated():boolean{
@@ -65,66 +66,86 @@ export class Auth {
   }
 
   getAllUsers(){
-    return this.http.get<{data:any}>("http://127.0.0.1:8000/api/user/")
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+      });
+    return this.http.get<{data:any}>("http://127.0.0.1:8000/api/user/",{headers})
   }
 
   getUserById(_id:String){
-    return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/user/${_id}`)
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+      });
+    return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/user/${_id}`,{headers})
   }
 
   addTask(task:String, description:String,status:String){
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+      });
    return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/",{
       "task":task,
       "description":description,
       "status":status
-    })
+    },{headers})
   }
 
   updateTask(task_id:string,task:String, description:String,status:String){
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+      });
     return this.http.put<{data:any}>(`http://127.0.0.1:8000/api/task/${task_id}`,{
       "task":task,
       "description":description,
       "status":status
-    })
+    },{headers})
   }
 
   getAllTasks(){
-          console.log("XXX",this.token);
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
       });
       return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/",{headers})
   }
 
   getTaskById(task_id:string){
-
     const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.token}`
-  });
-
-  
+      'AUTH': `${this.token}`
+    });
     return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/${task_id}`,{headers})
   }
 
   deleteTask(task_id:String){
-    return this.http.delete<({response:String})>(`http://127.0.0.1:8000/api/task/${task_id}`)
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+    });
+    return this.http.delete<({response:String})>(`http://127.0.0.1:8000/api/task/${task_id}`,{headers})
   }
 
   assignTask(username:string,user_id:string,task_id:string){
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+    });
     return this.http.post<{data:any}>("http://127.0.0.1:8000/api/task/assigntask",{
       "username":username,
       "user_id":user_id,
       "task_id":task_id
-    })
+    },{headers})
   }
 
   getAssignedUsers(task_id:String){
-      return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/getassignedusers/${task_id}`)
+      const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+      });
+      return this.http.get<{data:String}>(`http://127.0.0.1:8000/api/task/getassignedusers/${task_id}`,{headers})
   }
 
   
   reAssignTask(assign_id:String){
-    return this.http.delete<{data:any}>(`http://127.0.0.1:8000/api/task/reassigntask/${assign_id}`)
+    const headers = new HttpHeaders({
+        'AUTH': `${this.token}`
+    });
+    return this.http.delete<{data:any}>(`http://127.0.0.1:8000/api/task/reassigntask/${assign_id}`,{headers})
   }
   
 }
