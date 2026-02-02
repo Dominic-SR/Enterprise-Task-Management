@@ -23,6 +23,9 @@
         id="todo-list"
         class="task-list"
         cdkDropList
+        cdkDropList
+      [cdkDropListData]="toDoTask" 
+      (cdkDropListDropped)="drop($event)"
       >
         <!-- <app-task-card-->
 

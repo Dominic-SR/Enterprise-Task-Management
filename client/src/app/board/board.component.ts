@@ -80,9 +80,7 @@ export class BoardComponent {
       .subscribe({
         next:(data:any)=>{
           this.getAssignPersonsData= data.data;
-          console.log("111>>>>",data.data);
           this.assignees[task_id] = data.data;
-          console.log(">>>>",this.assignees);
          this.cdr.detectChanges();
         },
         error:(data:any)=>{
