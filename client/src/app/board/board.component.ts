@@ -2,12 +2,14 @@ import { ChangeDetectorRef, Component } from '@angular/core';
 import { Auth } from '../_services/auth';
 import { FormdialogComponent } from "../formdialog/formdialog.component"
 import { CommonModule } from '@angular/common';
+import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board',
   imports: [
     FormdialogComponent,
-    CommonModule
+    CommonModule,
+    DragDropModule
   ],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css',
@@ -38,6 +40,39 @@ export class BoardComponent {
   closeModal() {
     this.isModalOpen = false;
     this.editingTask=[]
+  }
+
+
+  drop(event: CdkDragDrop<any[]>) {
+    if (event.previousContainer === event.container) {
+      // Moving item within the same column
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      // Moving item to a different column
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+
+      // IMPORTANT: Update the task status in your backend
+      const movedTask = event.container.data[event.currentIndex];
+      const newStatus = this.getStatusFromContainerId(event.container.id);
+      this.updateTaskStatus(movedTask._id, newStatus);
+    }
+  }
+
+  private getStatusFromContainerId(id: string): string {
+    if (id === 'todo-list') return 'To Do';
+    if (id === 'inprogress-list') return 'In Progress';
+    return 'Done';
+  }
+
+  private updateTaskStatus(taskId: string, status: string) {
+    // Call your service here to persist the change
+    // Example: this.auth.updateTask(taskId, { status }).subscribe();
+    console.log(`Task ${taskId} moved to ${status}`);
   }
 
     getAssignedPersons(task_id:string){
