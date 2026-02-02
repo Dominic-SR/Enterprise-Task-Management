@@ -30,7 +30,7 @@
         <!-- <app-task-card-->
 
        @for (task of toDoTask; track task._id) {
-          <div class="card-container" >
+          <div class="card-container" cdkDrag>
             <h3 class="card-title">{{task.task}}</h3>
             <p class="card-description">{{task.description}}</p>
 
@@ -65,10 +65,13 @@
       <h2 class="column-title">In Progress</h2>
       <div
         id="inprogress-list"
-        class="task-list"
+      class="task-list"
+      cdkDropList
+      [cdkDropListData]="inProgressTask"
+      (cdkDropListDropped)="drop($event)"
       >
         @for (task of inProgressTask; track task._id) {
-          <div class="card-container" >
+          <div class="card-container" cdkDrag>
             <h3 class="card-title">{{task.task}}</h3>
             <p class="card-description">{{task.description}}</p>
 
@@ -101,10 +104,13 @@
       <h2 class="column-title">Done</h2>
       <div
         id="done-list"
-        class="task-list"
+      class="task-list"
+      cdkDropList
+      [cdkDropListData]="doneTask"
+      (cdkDropListDropped)="drop($event)"
       >
          @for (task of doneTask; track task._id) {
-          <div class="card-container" >
+          <div class="card-container" cdkDrag>
             <h3 class="card-title">{{task.task}}</h3>
             <p class="card-description">{{task.description}}</p>
 
