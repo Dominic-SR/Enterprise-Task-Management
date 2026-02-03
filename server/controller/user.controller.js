@@ -2,6 +2,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import moment from 'moment';
 import User from "../models/userSchema.js"
+import Role from "../models/rolesSchema.js"
 // import {errorHandler} from "../middleware/error.js"
 
 export const createUser = async (req, res, next) => {
@@ -80,6 +81,7 @@ export const login = async (req,res) => {
     let isCheckPassword = await bcrypt.compare(password,getUser.password)
 
     if(isCheckPassword){
+      let getRole = await Role.findById(getUser.role)
       
         let jwttoken = jwt.sign({
          _id:getUser._id,
@@ -99,7 +101,7 @@ export const login = async (req,res) => {
             data:{ _id: getUser._id,
             email: getUser.email,
             username: getUser.username,
-            role: getUser.role,},
+            role: getRole.role,},
             token:jwttoken
         });
       }
