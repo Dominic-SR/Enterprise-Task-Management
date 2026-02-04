@@ -101,11 +101,11 @@ export class Auth {
     },{headers})
   }
 
-  getAllTasks(){
+  getAllTasks(user_id:string){
     const headers = new HttpHeaders({
         'AUTH': `${this.token}`
       });
-      return this.http.get<{data:any}>("http://127.0.0.1:8000/api/task/",{headers})
+      return this.http.get<{data:any}>(`http://127.0.0.1:8000/api/task/${user_id}`,{headers})
   }
 
   getTaskById(task_id:string){

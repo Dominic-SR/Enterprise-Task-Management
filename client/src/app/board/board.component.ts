@@ -97,7 +97,7 @@ export class BoardComponent {
   }
 
   getAllTasks(){
-     this.auth.getAllTasks()
+     this.auth.getAllTasks(this.auth.authData._id)
       .subscribe({
         next:(data:any)=>{
           this.allTasks=data.data;
