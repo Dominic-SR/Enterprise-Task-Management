@@ -1,4 +1,6 @@
 import Task from "../models/taskSchema.js"
+import User from "../models/userSchema.js"
+import Role from "../models/rolesSchema.js"
 import AssignTask from "../models/assignTaskSchema.js";
 
 export const createTask = async(req,res) =>{
@@ -21,9 +23,16 @@ export const createTask = async(req,res) =>{
 }
 
 export const getAllTask = async(req,res) =>{
-
+       let {id} = req.params
     try{
-       let getAllTask = await Task.find();
+       let getUserDetails = await User.findById(id) 
+       let getRole = await Role.findById(getUserDetails.role)
+
+
+       let getAllTask 
+       if(getRole.role === "User"){
+        getAllTask =  await Task.find({_id:id});
+        }
         res.status(201).json({ message: 'Task fetch successfully', data: getAllTask });
     }
     catch(error){
