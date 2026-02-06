@@ -116,9 +116,16 @@ export const login = async (req,res) => {
 
 
 export const getAllUsers = async(req,res) =>{
-
     try{
-       let getAllUsers = await User.find();
+       let { role } = req.query;
+       let getAllUsers
+       if(role){
+        let roleId = await Role.find({"role":role})
+         getAllUsers = await User.find({"role":roleId});  
+       }else{
+         getAllUsers = await User.find();
+       }
+
         res.status(201).json({ message: 'Users fetch successfully', data: getAllUsers });
     }
     catch(error){
