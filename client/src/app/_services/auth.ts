@@ -65,11 +65,15 @@ export class Auth {
     )
   }
 
-  getAllUsers(){
+  getAllUsers(role: string){
     const headers = new HttpHeaders({
         'AUTH': `${this.token}`
       });
+  if(role){
+    return this.http.get<{data:any}>(`http://127.0.0.1:8000/api/user?role=${role}`,{headers})
+  }else{
     return this.http.get<{data:any}>("http://127.0.0.1:8000/api/user/",{headers})
+  }
   }
 
   getUserById(_id:String){

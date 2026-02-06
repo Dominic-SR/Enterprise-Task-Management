@@ -20,6 +20,7 @@ export class FormdialogComponent {
   userRole=""
   userId=""
   allUsers:any[]=[];
+  getUsers:any[]=[];
   assignedUsers:any[]=[]
 
   constructor(
@@ -71,10 +72,19 @@ export class FormdialogComponent {
   }
 
    getAllUsers(){
-     this.auth.getAllUsers()
+
+    let role
+    if(this.auth.authData.role !== "Super Admin"){
+      role = "User"
+    }else{
+      role = ""
+    }
+
+     this.auth.getAllUsers(role)
       .subscribe({
         next:(data:any)=>{
-          this.allUsers=data.data
+          this.allUsers=data.data;          
+          // this.getUsers=
           this.cdr.detectChanges();
         },
         error:(data:any)=>{
