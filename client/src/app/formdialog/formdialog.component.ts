@@ -80,11 +80,12 @@ export class FormdialogComponent {
       role = ""
     }
 
+
      this.auth.getAllUsers(role)
       .subscribe({
         next:(data:any)=>{
           this.allUsers=data.data;          
-          // this.getUsers=
+          
           this.cdr.detectChanges();
         },
         error:(data:any)=>{
