@@ -14,6 +14,7 @@ export class App {
   constructor(private auth:Auth, private router:Router){}
 
    ngOnInit(): void{
+    this.auth.canAuthenticate() 
      this.userData = this.auth.userDataAccess();
   }
 
