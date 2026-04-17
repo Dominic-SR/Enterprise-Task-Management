@@ -12,7 +12,7 @@ export class App {
   protected readonly title = signal('client');
   userData: any;
   constructor(private auth:Auth, private router:Router){
-    this.userData = this.auth.userDataSignal;
+    this.userData = Auth;
   }
 
    ngOnInit(): void{
@@ -24,7 +24,7 @@ export class App {
   }
 
   logout(){
-    this.auth.setUserData(null);
+    // this.Auth.setUserData(null);
     sessionStorage.removeItem('token');
     this.router.navigate(["login"]);
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { signal } from '@angular/core';
+// import { signal } from '@angular/core';
 
 
 @Injectable({
@@ -11,7 +11,7 @@ export class Auth {
  
   authData: any = null;
   token=sessionStorage.getItem("token");
-  userDataSignal = signal<any>(this.userDataAccess());
+  // userDataSignal = signal<any>(this.userDataAccess());
   
   constructor(private router:Router, private http:HttpClient) {}
 
@@ -42,14 +42,14 @@ export class Auth {
     return null; 
   }
 
-  setUserData(data: any) {
-    if (data) {
-      localStorage.setItem('user-data', JSON.stringify(data));
-    } else {
-      localStorage.removeItem('user-data');
-    }
-    this.userDataSignal.set(data);
-  }
+  // setUserData(data: any) {
+  //   if (data) {
+  //     localStorage.setItem('user-data', JSON.stringify(data));
+  //   } else {
+  //     localStorage.removeItem('user-data');
+  //   }
+  //   this.userDataSignal.set(data);
+  // }
 
   canAuthenticate(){
       if(this.isAuthenticated()){
