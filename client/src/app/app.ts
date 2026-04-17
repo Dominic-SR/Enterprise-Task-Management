@@ -10,12 +10,13 @@ import { Auth } from './_services/auth';
 })
 export class App {
   protected readonly title = signal('client');
-  userData = null
-  constructor(private auth:Auth, private router:Router){}
+  userData: any;
+  constructor(private auth:Auth, private router:Router){
+    this.userData = this.auth.userDataSignal;
+  }
 
    ngOnInit(): void{
     this.auth.canAuthenticate() 
-     this.userData = this.auth.userDataAccess();
   }
 
   navRoutes(path:String){
@@ -23,8 +24,8 @@ export class App {
   }
 
   logout(){
-    localStorage.clear();
-    sessionStorage.clear();
+    this.auth.setUserData(null);
+    sessionStorage.removeItem('token');
     this.router.navigate(["login"]);
   }
 }

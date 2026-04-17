@@ -39,7 +39,7 @@ export class LoginComponent {
     .subscribe({
       next:(data:any)=>{
         this.auth.storeToken(data.token);
-        localStorage.setItem('user-data',JSON.stringify(data.data));
+        this.auth.setUserData(data.data);
         this.auth.canAuthenticate();
       },
       error:(data:any)=>{
