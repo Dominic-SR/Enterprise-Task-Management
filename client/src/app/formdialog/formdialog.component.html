@@ -44,21 +44,19 @@
 
 
       <div class="form-field">
-  <label for="assignto">Assign To (Hold Ctrl/Cmd to select multiple)</label>
-  <select 
-    id="assignto" 
+  <label for="assignto">Assign To</label>
+  <app-multi-select-dropdown
+    id="assignto"
     name="assignto"
-    #assignto="ngModel" 
-    [(ngModel)]="formdata.assignto" 
-    required
-    multiple> @for (user of allUsers; track user._id) {
-      <option [value]="user._id">
-        {{ user.username }}
-      </option>
-    }
-  </select>
-  <p class="error-text" *ngIf="this.submit && assignto.errors?.['required']">
-    Please select a assigned users!
+    [selectedItems]="formdata.assignto"
+    (selectedItemsChange)="formdata.assignto = $event"
+    [options]="allUsers"
+    displayProperty="username"
+    valueProperty="_id"
+    placeholder="Select users to assign"
+  ></app-multi-select-dropdown>
+  <p class="error-text" *ngIf="this.submit && formdata.assignto.length === 0">
+    Please select assigned users!
   </p>
 </div>
 

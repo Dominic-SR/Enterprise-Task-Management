@@ -2,11 +2,11 @@
   <h1>Task management</h1>
 
   <ul class="nav-options">
-    <li *ngIf="!userData()" (click)="navRoutes('login')">Login</li>
-    <li *ngIf="!userData()" (click)="navRoutes('register')">Register</li>
-    <li *ngIf="userData()" (click)="navRoutes('users')">Users</li>
-    <li *ngIf="userData()" (click)="navRoutes('board')">Board</li>
-    <li *ngIf="userData()" (click)="this.logout()">Logout</li>
+    <li *ngIf="!isAuth" (click)="navRoutes('login')">Login</li>
+    <li *ngIf="!isAuth" (click)="navRoutes('register')">Register</li>
+    <li *ngIf="isAuth" (click)="navRoutes('users')">Users</li>
+    <li *ngIf="isAuth" (click)="navRoutes('board')">Board</li>
+    <li *ngIf="isAuth" (click)="this.logout()">Logout</li>
   </ul>
 </nav>
 

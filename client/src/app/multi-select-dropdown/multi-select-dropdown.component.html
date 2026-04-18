@@ -1,0 +1,34 @@
+<div class="multi-select-dropdown" #dropdownContainer>
+  <div class="dropdown-header" (click)="toggleDropdown()">
+    <div class="selected-values">
+      @if (selectedValues.length > 0) {
+        <div class="selected-items">
+          @for (value of selectedValues; track value) {
+            <span class="selected-item">
+              {{ getOptionLabel(value) }}
+              <button type="button" class="remove-btn" (click)="removeOption(value, $event)">×</button>
+            </span>
+          }
+        </div>
+      } @else {
+        <span class="placeholder">{{ placeholder }}</span>
+      }
+    </div>
+    <span class="dropdown-arrow" [class.open]="isOpen">▼</span>
+  </div>
+
+  @if (isOpen) {
+    <div class="dropdown-menu">
+      @for (option of options; track option[valueProperty]) {
+        <label class="dropdown-item">
+          <input 
+            type="checkbox" 
+            [checked]="isSelected(option)" 
+            (change)="selectOption(option)"
+          />
+          <span>{{ option[displayProperty] }}</span>
+        </label>
+      }
+    </div>
+  }
+</div>

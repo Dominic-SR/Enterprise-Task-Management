@@ -2,12 +2,14 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../_services/auth';
+import { MultiSelectDropdownComponent } from '../multi-select-dropdown/multi-select-dropdown.component';
 
 @Component({
   selector: 'app-formdialog',
   imports: [
     CommonModule,
-    FormsModule 
+    FormsModule,
+    MultiSelectDropdownComponent
   ],
   templateUrl: './formdialog.component.html',
   styleUrl: './formdialog.component.css',

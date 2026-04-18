@@ -42,14 +42,13 @@ export class Auth {
     return null; 
   }
 
-  // setUserData(data: any) {
-  //   if (data) {
-  //     localStorage.setItem('user-data', JSON.stringify(data));
-  //   } else {
-  //     localStorage.removeItem('user-data');
-  //   }
-  //   this.userDataSignal.set(data);
-  // }
+  setUserData(data: any) {
+    if (data) {
+      localStorage.setItem('user-data', JSON.stringify(data));
+    } else {
+      localStorage.removeItem('user-data');
+    }
+   }
 
   canAuthenticate(){
       if(this.isAuthenticated()){
